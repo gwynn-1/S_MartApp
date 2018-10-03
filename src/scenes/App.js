@@ -8,10 +8,14 @@ import React, { Component } from 'react';
 import {View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import {createDrawerNavigator} from "react-navigation";
+import {Provider} from 'react-redux';
 
 import Gateway from './Gateway/scenes/Gateway';
 import MainScene from './MainScene/scenes/MainScene';
+import WaitingScene from './WaitingScene/scenes/WaitingScene';
+
 import MenuBar from './MainScene/components/MenuBar';
+import store from '../services/redux/store'
 
 const MainScreen = createDrawerNavigator(
   {
@@ -32,9 +36,12 @@ const Root = createStackNavigator({
   },
   Main :{
     screen : MainScreen
+  },
+  Waiting:{
+    screen : WaitingScene
   }
 },{
-  initialRouteName: 'Gateway',header:null,headerMode: 'none',
+  initialRouteName: 'Waiting',header:null,headerMode: 'none',
 });
 
 export default class App extends Component {
@@ -43,8 +50,9 @@ export default class App extends Component {
     }
   render() {
     return (
-      <Root>
-      </Root>
+      <Provider store = {store}>
+        <Root/>
+      </Provider>
     );
   }
 }

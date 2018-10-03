@@ -7,7 +7,8 @@ export default class Login extends Component{
         return (
             <TextInput style={[textBoxStyle.textBox,this.props.style]}
                         placeholder={this.props.placeholder}
-                        secureTextEntry={this.props.secureTextEntry}>
+                        secureTextEntry={this.props.secureTextEntry}
+                        onChangeText={this.props.onChangeText}>
             </TextInput>
         );
         
