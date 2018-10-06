@@ -18,6 +18,9 @@ class MainScene extends Component{
       };
     constructor(props){
         super(props);
+        this.state = {
+            timer:""
+        };
     }
 
     render(){
@@ -49,7 +52,12 @@ class MainScene extends Component{
     }
 
     componentDidMount(){
-        setInterval(async ()=> await this._getQrCode(), 1000 * 60 * 3);
+        var value = setInterval(async ()=> await this._getQrCode(), 1000 * 60 * 3);
+        this.setState({timer:value});
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.state.timer);
     }
 }
 

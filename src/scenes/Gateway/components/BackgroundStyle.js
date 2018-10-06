@@ -1,4 +1,4 @@
-import {StyleSheet,Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default backgroundStyles = StyleSheet.create({
     mainTheme:{
@@ -8,7 +8,7 @@ export default backgroundStyles = StyleSheet.create({
     },
     scrView:{
         flex: 1,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     }
   });
   
