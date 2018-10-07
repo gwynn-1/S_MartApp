@@ -9,7 +9,7 @@ import {LogoutAction} from '../../../services/redux/actions/Login/LoginAction';
 class MenuBar extends Component{
     render(){
         return (
-            <ScrollView contentContainerStyle={Menu.container}>
+            <ScrollView contentContainerStyle={Menu.container} alwaysBounceVertical={false}>
                 <View style={Menu.HeaderMenu}>
                     <Image source={require("../../../assets/images/default-background.png")} style={Menu.HeaderMenuImage}/>
                     <View style={Menu.menuAvatar}>

@@ -5,7 +5,7 @@ import backgroundStyles from "./BackgroundStyle";
 export default class MainTheme extends Component{
     render(){
         return (
-            <ScrollView contentContainerStyle={backgroundStyles.scrView}>
+            <ScrollView contentContainerStyle={backgroundStyles.scrView} alwaysBounceVertical={false}>
                 <View style={backgroundStyles.mainTheme}>
                     <StatusBar
                         backgroundColor="#6039AF"

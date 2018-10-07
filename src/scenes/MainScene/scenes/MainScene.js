@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,ScrollView,Text,Image,TouchableOpacity } from 'react-native';
+import { View,ScrollView,Text,Image,TouchableOpacity,Animated,Easing } from 'react-native';
 import {connect} from 'react-redux';
 
 import MainTheme from '../components/mainTheme';
@@ -7,8 +7,9 @@ import Header from '../components/header';
 import mainStyle from './mainStyle';
 import LoadingScreen from '../../../components/LoadingScreen/loadingScreen';
 import {GetQrAction} from '../../../services/redux/actions/GetQr/GetQrAction';
-
-const base64img = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATCSURBVO3BQY4jRxAEwfAC//9l1xzzVECjk6PVKszwR6qWnFQtOqladFK16KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYs+eQnIb1LzBJBvUnMD5Ak1E5DfpOaNk6pFJ1WLTqoWfbJMzSYgb6h5AsgTQCY1k5obIE+o2QRk00nVopOqRSdViz75MiBPqHkCyKRmAjKpeULNBGRSMwGZ1ExANgF5Qs03nVQtOqladFK16JO/DJBJzQTkRs0E5Ak1E5BJzQTkb3JSteikatFJ1aJP/ufU3KiZgExAJjWTmv+Tk6pFJ1WLTqoWffJlav4mam6A3KjZpOZPclK16KRq0UnVok+WAfk3qZmATGomIJOaCcikZgIyqZmAbALyJzupWnRSteikatEnL6n5kwD5NwG5AfKEmv+Sk6pFJ1WLTqoW4Y+8AGRSMwHZpOYNIDdq3gAyqXkDyCY133RSteikatFJ1SL8kUVAnlAzAZnU3AB5Qs0NkCfUPAHkCTU3QN5Qs+mkatFJ1aKTqkWfvATkRs0NkEnNBOQJNTdAvgnIpOZGzRNAnlAzAfmmk6pFJ1WLTqoWffKSmgnIDZAn1ExAJjVPqLkBMqmZgDwBZFIzAZnUvKFmAnIDZFLzxknVopOqRSdVi/BHXgDyhpobIJOaGyCTmgnIjZoJyBNqJiCTmhsgN2pugExqftNJ1aKTqkUnVYs+eUnNBORGzRNqJiC/Sc0E5JvUPAFkUjMBmdR800nVopOqRSdViz55Ccik5gkgb6h5Q80baiYgk5oJyKTmDTUTkH/TSdWik6pFJ1WLPvllQG7U3AB5AsgNkEnNBGRSMwGZ1NyomYBMaiYgb6i5ATKpeeOkatFJ1aKTqkX4I4uATGomIDdqJiC/Sc0NkEnNbwIyqXkCyKRm00nVopOqRSdVi/BHXgDyhJoJyKTmBsgbaiYgm9TcALlRcwPkRs0TQCY1b5xULTqpWnRSteiTZWomIBOQJ4BMap4AsknNDZBJzY2aJ9TcAJnUTEC+6aRq0UnVopOqRZ/8MjUTkAnIpOYJIE+omYBMam6APKFmAjKpuQFyo2YC8ptOqhadVC06qVr0yZepmYA8AWRS8waQGzUTkBs1N0AmNTdA3gByo2YCsumkatFJ1aKTqkX4I/9hQJ5QMwGZ1DwBZFJzA+RGzRNAbtT8ppOqRSdVi06qFn3yEpDfpGZSMwGZ1ExAJjVvqJmATGreADKpuVEzAZnUTEAmNW+cVC06qVp0UrXok2VqNgG5ATKpmYDcAJnUTEAmNROQSc0mNU8AmdT8ppOqRSdVi06qFn3yZUCeUPMnUTMB+SYgb6i5ATKp2XRSteikatFJ1aJP/nJqngDyhJobIJOaCcik5g0gk5rfdFK16KRq0UnVok/+ckDeUDMBuQEyqZmATGomIE+ouQHym06qFp1ULTqpWvTJl6n5JjU3aiYgk5on1ExAJjVPAJnUPAFkUjMBuQEyqXnjpGrRSdWik6pFnywD8puATGomIDdA3lAzAXlCzQ2Qb1Kz6aRq0UnVopOqRfgjVUtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQtOqladFK16KRq0UnVopOqRf8A6QslRKiymSUAAAAASUVORK5CYII=`;
+import {checkConnection} from '../../../services/redux/actions/CheckConnection/checkConnection';
+import CheckConnection from '../../../components/CheckConnection/CheckConnection';
+import ButtonReload from '../components/ButtonReload';
 
 class MainScene extends Component{
     static navigationOptions = {
@@ -19,16 +20,29 @@ class MainScene extends Component{
     constructor(props){
         super(props);
         this.state = {
-            timer:""
+            timer:"",
+            timerError:"",
+            textConnection:"",
+            positionTextConnection:new Animated.Value(0),
+            backgroundTextConnection:"red",
+            reloadRotate:new Animated.Value(0),
+            isLoading:false
         };
     }
 
     render(){
         const height = (this.props.loadingScreen==true) ? "100%" : 0;
+        const spin = this.state.reloadRotate.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '180deg']
+          })
+
         return (
             <MainTheme style={mainStyle.container}>
                 <Header navigation={this.props.navigation} />
-                <ScrollView contentContainerStyle={mainStyle.body}>
+                <CheckConnection text={this.state.textConnection} style={{transform: [{translateY: this.state.positionTextConnection}],backgroundColor : this.state.backgroundTextConnection}}/>
+
+                <ScrollView contentContainerStyle={mainStyle.body} alwaysBounceVertical={false}>
                         <View style={mainStyle.bodyText}>
                             <Text style={mainStyle.text}>Xin Chào, {this.props.user.name}</Text>
                         </View>
@@ -36,8 +50,9 @@ class MainScene extends Component{
                             <Image style={mainStyle.img} source={{uri: this.props.qrcode}}/>
                         </View>
                 </ScrollView>
+                <ButtonReload isLoading={this.state.isLoading} onPress={()=>{this._onPressReload()}}></ButtonReload>
                 <View style={mainStyle.footer}>
-                    <TouchableOpacity style={mainStyle.btnFooter}>
+                    <TouchableOpacity style={mainStyle.btnFooter} >
                         <Text style={mainStyle.footerText}>Xem vị trí cửa hàng</Text>
                     </TouchableOpacity>
                 </View>
@@ -46,18 +61,93 @@ class MainScene extends Component{
         );
     }
 
+    _onPressReload(){
+        // this._getQrCode();
+        this.setState({isLoading:true});
+        this._reloadQr();
+    }
+
+    _reloadQr(){
+        var that = this;
+        this.props.GetQrAction(this.props.user.jwt_string,function(){
+            clearInterval(that.state.timer);
+            that.setState({textConnection:"Không kết nối được Internet",backgroundTextConnection:"red",isLoading:false});
+            that._animCheckConnectionAppear();
+            
+            that._startCheckConnectionSchedule();
+            that._checkInternet();
+        },function(){
+            that.setState({isLoading:false});
+        });
+    }
+
+    _animCheckConnectionAppear(){
+        Animated.timing(                  // Animate over time
+            this.state.positionTextConnection,            // The animated value to drive
+            {
+              toValue: 70,
+              easing: Easing.linear,                   // Animate to opacity: 1 (opaque)
+              duration: 5000,
+              useNativeDriver: true              // Make it take a while
+            }
+          ).start();   
+    }
+
+    _animCheckConnectionDisappear(){
+        Animated.timing(                  // Animate over time
+            this.state.positionTextConnection,            // The animated value to drive
+            {
+              toValue: 0,  
+              easing: Easing.linear,              // Animate to opacity: 1 (opaque)
+              duration: 5000,
+              delay:300,    
+              useNativeDriver: true          // Make it take a while
+            }
+          ).start();   
+    }
+
+    async _checkInternet(){
+        var that=this;
+        this.props.checkConnection(function(){
+            clearInterval(that.state.timerError);
+            
+            that.setState({textConnection:"Đã kết nối Internet",backgroundTextConnection:"green"});
+            that._animCheckConnectionDisappear();
+            that._startGetQrSchedule();
+            that._getQrCode()
+        });
+    }
+
     async _getQrCode(){
         console.log("qr");
-        this.props.GetQrAction(this.props.user.jwt_string);
+        var that = this;
+        this.props.GetQrAction(this.props.user.jwt_string,function(){
+            clearInterval(that.state.timer);
+            that.setState({textConnection:"Không kết nối được Internet",backgroundTextConnection:"red"});
+            that._animCheckConnectionAppear();
+            
+            that._startCheckConnectionSchedule();
+            that._checkInternet();
+        });
+    }
+
+    _startGetQrSchedule(){
+        var value = setInterval(async ()=> await this._getQrCode(), 1000 * 60*2);
+        this.setState({timer:value});
+    }
+
+    _startCheckConnectionSchedule(){
+        var value = setInterval(async ()=> await this._checkInternet(), 1000 * 8);
+        this.setState({timerError:value});
     }
 
     componentDidMount(){
-        var value = setInterval(async ()=> await this._getQrCode(), 1000 * 60 * 3);
-        this.setState({timer:value});
+        this._startGetQrSchedule();
     }
 
     componentWillUnmount() {
         clearInterval(this.state.timer);
+        clearInterval(this.state.timerError);
     }
 }
 
@@ -65,10 +155,11 @@ function mapStateToProps(state){
     return {
         user:state.user,
         loadingScreen : state.loadingScreen,
-        qrcode:state.qrcode
+        qrcode:state.qrcode,
+        loginError:state.loginError
     };
 }
 
 export default connect(mapStateToProps,{
-    GetQrAction
+    GetQrAction,checkConnection
 })(MainScene);

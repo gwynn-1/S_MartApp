@@ -32,7 +32,7 @@ export default Menu = StyleSheet.create({
     userAvatar:{
         width:70,
         height:70,
-        borderRadius: 100
+        borderRadius: 35
     },
     menuUser:{
         flex:2,

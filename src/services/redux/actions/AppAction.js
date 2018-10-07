@@ -13,7 +13,7 @@ export function ErrorAction(error_type){
         case "user_not_exist":
             return {type:typeAction.LOGIN_USER_NOT_EXIST};
         default:
-            return {type:typeAction.INTERNAL_SERVER_ERROR};
+            return {type:""};
     }
 }
 

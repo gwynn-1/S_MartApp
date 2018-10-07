@@ -1,17 +1,19 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 
 export default headerStyle = StyleSheet.create({
     container:{
-        height:60,
+        height:Platform.OS === 'ios' ? 80 : 60,
         width:"100%",
         backgroundColor:"#6039AF",
         shadowColor: '#000000',
         shadowOpacity: 0.8,
         shadowRadius: 2,
+        paddingTop: Platform.OS === 'ios' ? 20 : 0,
         shadowOffset: {
             height: 1,
             width: 1
-        }
+        },
+        zIndex:10
     },
     body:{
         flex:1,

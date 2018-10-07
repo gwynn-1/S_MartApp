@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const rootApi = "https://s-martapp.herokuapp.com/api/";
 
 export default class RootApi {
@@ -5,7 +7,7 @@ export default class RootApi {
         return rootApi;
     }
 
-    getAuthenHeader(){
-        
+    static checkConnection(){
+        return axios.post(this.rootApi + "check-connection",{});
     }
 }

@@ -10,7 +10,7 @@ export default waitingStyle = StyleSheet.create({
         width:150,
         height:150,
         marginTop: 90,
-        borderRadius: 100,
+        borderRadius: 75,
     },
     loadingSection:{
         width:"100%",
