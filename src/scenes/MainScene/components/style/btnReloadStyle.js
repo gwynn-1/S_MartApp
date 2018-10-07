@@ -8,7 +8,7 @@ export default btnReload = StyleSheet.create({
         bottom:40,
         right:10,
         borderRadius: 50,
-        backgroundColor:"#b3b3b3",
+        backgroundColor:"#6039AF",
     },
     image:{
         width:25,

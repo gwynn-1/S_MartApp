@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,ScrollView,Text,Image,TouchableOpacity,Animated,Easing } from 'react-native';
+import { View,ScrollView,Text,Image,TouchableOpacity,Animated,Easing,Platform } from 'react-native';
 import {connect} from 'react-redux';
 
 import MainTheme from '../components/mainTheme';
@@ -85,7 +85,7 @@ class MainScene extends Component{
         Animated.timing(                  // Animate over time
             this.state.positionTextConnection,            // The animated value to drive
             {
-              toValue: 70,
+              toValue:  Platform.OS === 'ios' ? 90 : 70,
               easing: Easing.linear,                   // Animate to opacity: 1 (opaque)
               duration: 5000,
               useNativeDriver: true              // Make it take a while
