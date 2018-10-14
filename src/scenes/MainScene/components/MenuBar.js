@@ -26,13 +26,13 @@ class MenuBar extends Component{
                                 <Text style={Menu.itemText}>Trang chủ</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={Menu.touchItem}>
+                        <TouchableOpacity style={Menu.touchItem} >
                             <View style={Menu.menuItem}>
                                 <Image source={require("../../../assets/images/account.png")} style={Menu.icon}/>
                                 <Text style={Menu.itemText}>Tài khoản</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={Menu.touchItem}>
+                        <TouchableOpacity style={Menu.touchItem} onPress={()=>{this.props.navigation.navigate("Receipt")}}>
                             <View style={Menu.menuItem}>
                                 <Image source={require("../../../assets/images/receipt.png")} style={Menu.icon}/>
                                 <Text style={Menu.itemText}>Hóa đơn</Text>

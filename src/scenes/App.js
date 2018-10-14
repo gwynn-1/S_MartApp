@@ -13,6 +13,7 @@ import {Provider} from 'react-redux';
 import Gateway from './Gateway/scenes/Gateway';
 import MainScene from './MainScene/scenes/MainScene';
 import WaitingScene from './WaitingScene/scenes/WaitingScene';
+import ReceiptScene from './ReceiptScene/scene/ReceiptScene';
 
 import MenuBar from './MainScene/components/MenuBar';
 import store from '../services/redux/store'
@@ -21,6 +22,9 @@ const MainScreen = createDrawerNavigator(
   {
       Main :{
         screen : MainScene
+      },
+      Receipt:{
+        screen: ReceiptScene
       }
   },
   {
