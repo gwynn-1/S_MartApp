@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Image,StatusBar,ActivityIndicator,Text, Alert} from 'react-native';
 import {connect} from 'react-redux';
 import {NavigationActions,StackActions} from 'react-navigation';
+import {SkypeIndicator} from 'react-native-indicators';
 
 
 import waitingStyle from './style';
@@ -18,7 +19,8 @@ class WaitingScene extends Component{
                         />
                 <Image style={waitingStyle.logoImage} source={require("../../../assets/images/logo.png")} />
                 <View style={waitingStyle.loadingSection}>
-                    <ActivityIndicator animating={true} size="small" color="#ffffff" />
+                    {/* <ActivityIndicator animating={true} size="small" color="#ffffff" /> */}
+                    <SkypeIndicator color='white' size={15}/>
                     <Text style={waitingStyle.loadingText}>Đang kiểm tra thông tin đăng nhập...</Text>
                 </View>
             </View>
