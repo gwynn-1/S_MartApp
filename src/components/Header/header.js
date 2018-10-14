@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View,TouchableWithoutFeedback,Image } from 'react-native';
-import headerStyle from './style/headerStyle';
+import headerStyle from './headerStyle';
 
 export default class Header extends Component{
     render(){
@@ -9,11 +9,11 @@ export default class Header extends Component{
                 <View style={headerStyle.body}>
                     <TouchableWithoutFeedback  onPress={()=>this.props.navigation.openDrawer()} >
                         <View style={headerStyle.button}>
-                            <Image style={headerStyle.menuImage} source={require("../../../assets/images/menu.png")}/>
+                            <Image style={headerStyle.menuImage} source={require("../../assets/images/menu.png")}/>
                         </View>
                     </TouchableWithoutFeedback>
                     <View>
-                        <Image style={headerStyle.iconImage} source={require("../../../assets/images/logo.png")}/>
+                        <Image style={headerStyle.iconImage} source={require("../../assets/images/logo.png")}/>
                     </View>
                 </View>
             </View>

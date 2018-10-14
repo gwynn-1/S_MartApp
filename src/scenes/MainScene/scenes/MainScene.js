@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View,ScrollView,Text,Image,TouchableOpacity,Animated,Easing,Platform } from 'react-native';
 import {connect} from 'react-redux';
 
-import MainTheme from '../components/mainTheme';
-import Header from '../components/header';
+import MainTheme from '../../../components/MainTheme/mainTheme';
+import Header from '../../../components/Header/header';
 import mainStyle from './mainStyle';
 import LoadingScreen from '../../../components/LoadingScreen/loadingScreen';
 import {GetQrAction} from '../../../services/redux/actions/GetQr/GetQrAction';
