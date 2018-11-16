@@ -5,7 +5,7 @@ export default LoginStyles = StyleSheet.create({
     container:{
         backgroundColor:"white",
         width:win.width -15,
-        height:win.height - 150,
+        height:win.height,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         alignItems:"center"
@@ -16,7 +16,7 @@ export default LoginStyles = StyleSheet.create({
         borderRadius: 45
     },
     imageContainer:{
-        flex:1,
+        height:110,
         justifyContent:"center",
         alignItems:"center",
         
@@ -25,6 +25,31 @@ export default LoginStyles = StyleSheet.create({
         width:'80%',
         // backgroundColor:"yellow",
         marginTop:80,
+    },
+    formSignup:{
+        width:"90%",
+        marginTop:15
+    },
+    SignupHeader:{
+        height:40,
+        marginBottom:40,
+        alignItems:"center",
+        flexDirection:"row",
+        justifyContent:'space-between'
+    },
+    buttonBackToLogin:{
+        width:35,
+        height:35,
+        justifyContent:"center",
+        alignContent:"center"
+    },
+    imageBack:{
+        width:25,height:25
+    },
+    textRegister:{
+        color:"#000000",
+        fontSize:24,
+        fontWeight:"900"
     },
     textBox:{
         marginBottom: 20,

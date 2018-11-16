@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {View,Image } from 'react-native';
+import {View,Image} from 'react-native';
 import {connect} from 'react-redux';
 
 import MainTheme from '../components/mainTheme';
 import LoginStyles from './LoginStyle';
-import Login from './Login';
 import LoadingScreen from '../../../components/LoadingScreen/loadingScreen';
+import GatewayForm from './GatewayForm';
 
 class Gateway extends Component{
     static navigationOptions = {
@@ -25,7 +25,7 @@ class Gateway extends Component{
                     <View style={LoginStyles.imageContainer}>
                         <Image style={LoginStyles.userImage} source={require("../../../assets/images/logo.png")} />
                     </View>
-                    <Login navigation={this.props.navigation}/>
+                    <GatewayForm navigation={this.props.navigation}/>
                 </View>
                 <LoadingScreen style={{height}} animating={this.props.loadingScreen}/> 
             </MainTheme>
