@@ -10,6 +10,7 @@ import LoginStyles from './LoginStyle';
 import TextBox from '../../../components/TextBox/TextBox';
 import Button from '../../../components/Button/Button';
 import {LoginAction} from '../../../services/redux/actions/Login/LoginAction';
+import {SignupAction} from '../../../services/redux/actions/Signup/signupAction';
 import {GetQrAction} from '../../../services/redux/actions/GetQr/GetQrAction';
 import validateLoginForm from '../../../services/validations/LoginForm/validate';
 import validateSignupForm from '../../../services/validations/SignupForm/validate';
@@ -133,7 +134,22 @@ class GatewayForm extends Component{
         if(!validate){
             this.clearError();
 
-            
+            this.props.SignupAction(data,function(){
+                that._ShowFormLogin();
+
+                Alert.alert(
+                    'Đăng kí thành công',
+                    "Hãy kiểm tra email và kích hoạt tài khoản trước khi đăng nhập nhé",
+                    [
+                      {text: 'OK'}
+                    ],
+                    { cancelable: false }
+                  )
+            },function(){
+                if(that.props.loginError.error == true){
+                    that.popupError(that.props.loginError.message);
+                }
+            });
         }else{
             this.setState({
                 errorUsername: ('user_name' in validate) ? validate.user_name[0]:null,
@@ -261,5 +277,5 @@ function mapStateToProps(state){
 }
 
 export default connect(mapStateToProps,{
-    LoginAction,GetQrAction
+    LoginAction,GetQrAction,SignupAction
 })(GatewayForm);

@@ -22,6 +22,11 @@ export default LoginErrorReducer= (state = initError,action)=>{
                 error:true,
                 message:"Tài khoản không tồn tại. Xin hãy thử lại"
             };
+            case typeAction.LOGIN_USER_EXISTED:
+            return {
+                error:true,
+                message:"Thông tin tài khoản đã tồn tại."
+            };
         default: return state;
     }
     return state;

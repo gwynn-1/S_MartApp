@@ -12,6 +12,8 @@ export function ErrorAction(error_type){
             return {type:typeAction.LOGIN_WRONG_PASSWORD};
         case "user_not_exist":
             return {type:typeAction.LOGIN_USER_NOT_EXIST};
+        case "user_existed":
+            return {type:typeAction.LOGIN_USER_EXISTED};
         default:
             return {type:""};
     }

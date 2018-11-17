@@ -6,7 +6,7 @@ const rule = {
         },
         length: {
           minimum: 4,
-          maximum :16,
+          maximum :50,
           tooLong:"Tên đăng nhập không được quá %{count} từ",
           tooShort:"Tên đăng nhập không được ít hơn %{count} từ"
         }
