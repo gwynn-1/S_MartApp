@@ -9,11 +9,14 @@ import {NavigationActions,StackActions} from 'react-navigation';
 import LoginStyles from './LoginStyle';
 import TextBox from '../../../components/TextBox/TextBox';
 import Button from '../../../components/Button/Button';
+import SecondaryButton from '../../../components/Button/SecondaryButton';
 import {LoginAction} from '../../../services/redux/actions/Login/LoginAction';
 import {SignupAction} from '../../../services/redux/actions/Signup/signupAction';
 import {GetQrAction} from '../../../services/redux/actions/GetQr/GetQrAction';
 import validateLoginForm from '../../../services/validations/LoginForm/validate';
 import validateSignupForm from '../../../services/validations/SignupForm/validate';
+import SModal from '../../../components/SModal/SModal';
+import {ModalAction} from '../../../services/redux/actions/AppAction';
 
 
 class GatewayForm extends Component{
@@ -35,11 +38,11 @@ class GatewayForm extends Component{
                     Đăng nhập
                     </Text>
                 </Button>
-                <Button style={LoginStyles.buttonSignup} onPress={()=>this._ShowFormSignup()}>
+                <SecondaryButton style={LoginStyles.buttonSignup} onPress={()=>this._ShowFormSignup()}>
                     <Text style={LoginStyles.textSignup}>
                         Đăng kí
                     </Text>
-                </Button>
+                </SecondaryButton>
                 <TouchableWithoutFeedback onPressIn={()=>{this.forgetTextPressIn()}} onPressOut={()=>{this.forgetTextPressOut()}}>
                     <Text style={[LoginStyles.textForget,{color : this.state.forgetTextColor }]} >Quên mật khẩu</Text>
                 </TouchableWithoutFeedback>
@@ -76,6 +79,7 @@ class GatewayForm extends Component{
                                     </Text>
                                 </Button>
                     </KeyboardAwareScrollView>
+                    
                 </View>
             );
         }
@@ -83,6 +87,10 @@ class GatewayForm extends Component{
         return (
             <Animated.View style={[LoginStyles.container,{transform: [{translateY: this.state.startSignup}]}]}>
                 {form}
+                <SModal message={this.state.modalMessage} title={this.state.modalTitle} PrimaryText="OK" isOpen={this.state.modalError} haveSecondary={false}
+                        onPrimaryPress={()=>this.setState({modalError:false})}></SModal>
+                <SModal message="Không thể kết nối mạng. Xin hãy thử lại" title="Lỗi" PrimaryText="OK" isOpen={this.props.modalOpen} haveSecondary={false}
+                        onPrimaryPress={()=>this.props.ModalAction()}></SModal>
             </Animated.View>
         );
     }
@@ -137,14 +145,11 @@ class GatewayForm extends Component{
             this.props.SignupAction(data,function(){
                 that._ShowFormLogin();
 
-                Alert.alert(
-                    'Đăng kí thành công',
-                    "Hãy kiểm tra email và kích hoạt tài khoản trước khi đăng nhập nhé",
-                    [
-                      {text: 'OK'}
-                    ],
-                    { cancelable: false }
-                  )
+                that.setState({
+                    modalMessage:"Hãy kiểm tra email và kích hoạt tài khoản trước khi đăng nhập nhé",
+                    modalTitle:'Đăng kí thành công',
+                    modalError:true
+                })
             },function(){
                 if(that.props.loginError.error == true){
                     that.popupError(that.props.loginError.message);
@@ -245,6 +250,9 @@ class GatewayForm extends Component{
             errorName:null,
             errorEmail:null,
             errorPhone:null,
+            modalMessage:"",
+            modalTitle:"",
+            modalError:false
         }
     }
 
@@ -258,24 +266,22 @@ class GatewayForm extends Component{
 
     popupError(message){
         console.log(message);
-        Alert.alert(
-            'Lỗi',
-            message,
-            [
-              {text: 'OK'}
-            ],
-            { cancelable: false }
-          )
+          this.setState({
+            modalMessage:message,
+            modalTitle:"LỖI",
+            modalError:true
+        })
     }
 }
 
 function mapStateToProps(state){
     return {
         loginError:state.loginError,
-        user:state.user
+        user:state.user,
+        modalOpen:state.modalOpen,
     };
 }
 
 export default connect(mapStateToProps,{
-    LoginAction,GetQrAction,SignupAction
+    LoginAction,GetQrAction,SignupAction,ModalAction
 })(GatewayForm);

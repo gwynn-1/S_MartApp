@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View,ScrollView,Text,Image,TouchableOpacity,Animated,Easing,Platform } from 'react-native';
 import {connect} from 'react-redux';
+import {NavigationActions,StackActions} from 'react-navigation';
 
 import MainTheme from '../../../components/MainTheme/mainTheme';
 import Header from '../../../components/Header/header';
@@ -10,6 +11,11 @@ import {GetQrAction} from '../../../services/redux/actions/GetQr/GetQrAction';
 import {checkConnection} from '../../../services/redux/actions/CheckConnection/checkConnection';
 import CheckConnection from '../../../components/CheckConnection/CheckConnection';
 import ButtonReload from '../components/ButtonReload';
+import {LogoutAction} from '../../../services/redux/actions/Login/LoginAction';
+import {ModalAction} from '../../../services/redux/actions/AppAction';
+
+import SModal from '../../../components/SModal/SModal';
+
 
 class MainScene extends Component{
     static navigationOptions = {
@@ -26,16 +32,15 @@ class MainScene extends Component{
             positionTextConnection:new Animated.Value(0),
             backgroundTextConnection:"red",
             reloadRotate:new Animated.Value(0),
-            isLoading:false
+            isLoading:false,
+            modalMessage:"",
+            modalTitle:"",
+            modalError:false
         };
     }
 
     render(){
         const height = (this.props.loadingScreen==true) ? "100%" : 0;
-        const spin = this.state.reloadRotate.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '180deg']
-          })
 
         return (
             <MainTheme style={mainStyle.container}>
@@ -57,8 +62,39 @@ class MainScene extends Component{
                     </TouchableOpacity>
                 </View>
                 <LoadingScreen style={{height}} animating={this.props.loadingScreen}/> 
+                <SModal message="Bạn có muốn đăng xuất ?" title="Thoát" PrimaryText="Có" SecondaryText="Không" isOpen={this.props.modalOpen} haveSecondary={true}
+                        onPrimaryPress={()=>this.LogoutConfirm()} onSecondaryPress={()=>this.props.ModalAction()}></SModal>
+                <SModal message={this.state.modalMessage} title={this.state.modalTitle} PrimaryText="OK" isOpen={this.state.modalError} haveSecondary={false}
+                        onPrimaryPress={()=>this.setState({modalError:false})}></SModal>
             </MainTheme>
         );
+    }
+
+    LogoutConfirm(){
+        var that = this;
+        this.props.ModalAction();
+
+        this.props.LogoutAction(this.props.user.jwt_string,function(){
+            that.props.navigation.dispatch(StackActions.reset(
+                {
+                    index: 0,
+                    actions: [
+                    NavigationActions.navigate({ routeName: 'Gateway'})
+                    ]
+                }));
+        },function(){
+            if(that.props.loginError.error == true){
+                that.popupError(that.props.loginError.message);
+            }
+        });
+    }
+
+    popupError(message){
+        this.setState({
+            modalMessage:message,
+            modalTitle:"Lỗi",
+            modalError:true
+        })
     }
 
     _onPressReload(){
@@ -155,11 +191,12 @@ function mapStateToProps(state){
     return {
         user:state.user,
         loadingScreen : state.loadingScreen,
+        modalOpen:state.modalOpen,
         qrcode:state.qrcode,
         loginError:state.loginError
     };
 }
 
 export default connect(mapStateToProps,{
-    GetQrAction,checkConnection
+    GetQrAction,checkConnection,LogoutAction,ModalAction
 })(MainScene);

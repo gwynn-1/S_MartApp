@@ -14,6 +14,8 @@ export function ErrorAction(error_type){
             return {type:typeAction.LOGIN_USER_NOT_EXIST};
         case "user_existed":
             return {type:typeAction.LOGIN_USER_EXISTED};
+        case "inactive_user":
+            return {type:typeAction.INACTIVE_USER};
         default:
             return {type:""};
     }
@@ -25,4 +27,8 @@ export function UserAction(data){
 
 export function QrCodeAction(qrcode){
     return {type : typeAction.GET_QR_CODE,qr:qrcode};
+}
+
+export function ModalAction(){
+    return {type:typeAction.MODAL_OPEN};
 }

@@ -18,7 +18,7 @@ export function LoginAction(data,success,errorAction){
                                 success();
                             }
                         }else if(res.data.status=="error"){
-                            console.log("error");
+                            console.log(res.data.message);
                             if(res.data.message == "User không tồn tại"){
                                 dispatch(ErrorAction("user_not_exist"));
                             }else if(res.data.message == "Sai mật khẩu"){
@@ -33,9 +33,13 @@ export function LoginAction(data,success,errorAction){
                         // handle error
                         // console.log(error);
                         dispatch(LoadingScreenAction());
-                        if (!error.status) {
+                        if (!error.response) {
                             // network error
                             dispatch(ErrorAction("error_connection"));
+                        }else{
+                            if(error.response.status == 401 && error.response.data.message == "User chưa được active"){
+                                dispatch(ErrorAction("inactive_user"));
+                            }
                         }
 
                         if(typeof errorAction == "function"){

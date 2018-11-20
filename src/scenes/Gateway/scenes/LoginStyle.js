@@ -64,8 +64,7 @@ export default LoginStyles = StyleSheet.create({
         
     },
     buttonSignup:{
-        marginTop: 10,
-        backgroundColor:"#a5a5a5"        
+        marginTop: 10     
     },
     textSignup:{
         fontSize: 16

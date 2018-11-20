@@ -4,9 +4,14 @@ import {connect} from 'react-redux';
 
 import Menu from './style/MenuStyle';
 import {NavigationActions,StackActions} from 'react-navigation';
-import {LogoutAction} from '../../../services/redux/actions/Login/LoginAction';
+import {ModalAction} from '../../../services/redux/actions/AppAction';
+
 
 class MenuBar extends Component{
+    constructor(props){
+        super(props);
+    }
+
     render(){
         return (
             <ScrollView contentContainerStyle={Menu.container} alwaysBounceVertical={false}>
@@ -62,6 +67,7 @@ class MenuBar extends Component{
                         </TouchableOpacity>
                     </View>
                 </View>
+                
             </ScrollView>
         );
     }
@@ -87,15 +93,17 @@ class MenuBar extends Component{
     _PressLogout(){
         var that =this;
         this.props.navigation.closeDrawer();
-        Alert.alert(
-            'Đăng xuất',
-            'Bạn có muốn đăng xuất ?',
-            [
-              {text: 'Có', onPress: () => that.LogoutConfirm()},
-              {text: 'Không', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-            ],
-            { cancelable: false }
-          )
+
+        this.props.ModalAction();
+        // Alert.alert(
+        //     'Đăng xuất',
+        //     'Bạn có muốn đăng xuất ?',
+        //     [
+        //       {text: 'Có', onPress: () => that.LogoutConfirm()},
+        //       {text: 'Không', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        //     ],
+        //     { cancelable: false }
+        //   )
     }
 
     popupError(message){
@@ -114,10 +122,10 @@ class MenuBar extends Component{
 function mapStateToProps(state){
     return {
         user:state.user,
-        loginError:state.loginError
+        loginError:state.loginError,
     };
 }
 
 export default connect(mapStateToProps,{
-    LogoutAction
+    ModalAction
 })(MenuBar);

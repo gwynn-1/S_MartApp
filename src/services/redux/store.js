@@ -4,10 +4,13 @@ import LoadingScreenReducer from './reducers/LoadingScreenReducer';
 import LoginErrorReducer from './reducers/LoginErrorReducer';
 import UserReducer from './reducers/UserReducer';
 import QrCodeReducer from './reducers/QrCodeReducer';
+import ModalReducer from './reducers/ModalReducer';
+
 
 
 const reducer =  combineReducers({
     loadingScreen:LoadingScreenReducer,
+    modalOpen:ModalReducer,
     loginError:LoginErrorReducer,
     user:UserReducer,
     qrcode:QrCodeReducer

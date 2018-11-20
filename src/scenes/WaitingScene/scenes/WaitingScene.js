@@ -9,6 +9,7 @@ import waitingStyle from './style';
 import { _getUser } from '../../../services/asyncStorage/index';
 import {checkLoginAction} from '../../../services/redux/actions/Login/LoginAction';
 import {GetQrAction} from '../../../services/redux/actions/GetQr/GetQrAction';
+import {ModalAction} from '../../../services/redux/actions/AppAction';
 
 class WaitingScene extends Component{
     render(){
@@ -70,14 +71,15 @@ class WaitingScene extends Component{
     }
 
     popupError(message){
-        Alert.alert(
-            'Lỗi',
-            message,
-            [
-              {text: 'OK'}
-            ],
-            { cancelable: false }
-          )
+        // Alert.alert(
+        //     'Lỗi',
+        //     message,
+        //     [
+        //       {text: 'OK'}
+        //     ],
+        //     { cancelable: false }
+        //   )
+        this.props.ModalAction();
     }
 }
 
@@ -89,5 +91,5 @@ function mapStateToProps(state){
 }
 
 export default connect(mapStateToProps,{
-    checkLoginAction,GetQrAction
+    checkLoginAction,GetQrAction,ModalAction
 })(WaitingScene);
