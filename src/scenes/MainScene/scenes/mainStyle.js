@@ -14,7 +14,7 @@ export default mainStyle = StyleSheet.create({
     },
     bodyText:{
         alignItems: 'center',
-        marginTop: 80,
+        marginTop: 50,
         marginBottom: 50,
     },
     text:{
@@ -24,10 +24,10 @@ export default mainStyle = StyleSheet.create({
     },
     imgBody:{
         alignItems: 'center',
-        height:200
+        height:screenWidth-100
     },
     img:{
-        width: 200, height: 200, borderWidth: 1, borderColor: '#000000',borderRadius: 10,
+        width: screenWidth-100, height: screenWidth-100, borderWidth: 1, borderColor: '#000000',borderRadius: 10,
     },
     footer:{
         position:"absolute",
