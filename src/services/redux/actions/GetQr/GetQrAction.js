@@ -14,7 +14,7 @@ export function GetQrAction(jwt,errorAction,success=null){
                         console.log(error);
                         if (!error.status) {
                             // network error
-                            dispatch(ErrorAction("error_connection"));
+                            dispatch(ErrorAction(typeAction.ERROR_CONNECTION));
                             if(typeof errorAction == "function"){
                                 errorAction();
                             }

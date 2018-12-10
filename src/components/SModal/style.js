@@ -1,10 +1,11 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet,Dimensions} from 'react-native';
 
+const win = Dimensions.get('window');
 export default modalStyle = StyleSheet.create({
     modal:{
         justifyContent: 'center',
         alignItems: 'center',
-        width: 370,
+        width: win.width - 25,
         height:210,
         borderRadius:10
     },

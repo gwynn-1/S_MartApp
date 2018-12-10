@@ -1,4 +1,5 @@
 import {LoadingScreenAction,ErrorAction} from '../AppAction';
+import * as typeAction from '../typeAction';
 import SignupService from '../../../api/Gateway/signup';
 
 export function SignupAction(data,success,errorAction){
@@ -19,8 +20,8 @@ export function SignupAction(data,success,errorAction){
                         .catch(function(error){
                             dispatch(LoadingScreenAction());
                             if(error.response){
-                                if(error.response.status == 401 && error.response.data.message == "Thông tin tài khoản đã tồn tại"){
-                                    dispatch(ErrorAction("user_existed"));
+                                if(error.response.status == 401 && error.response.data.message ==typeAction.LOGIN_USER_EXISTED){
+                                    dispatch(ErrorAction(typeAction.LOGIN_USER_EXISTED));
                                 }
 
                                 if(typeof errorAction =="function"){

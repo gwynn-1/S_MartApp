@@ -6,15 +6,15 @@ export function LoadingScreenAction(){
 
 export function ErrorAction(error_type){
     switch(error_type){
-        case "error_connection" : 
+        case typeAction.ERROR_CONNECTION : 
             return {type:typeAction.ERROR_CONNECTION};
-        case "wrong_password":
+        case typeAction.LOGIN_WRONG_PASSWORD:
             return {type:typeAction.LOGIN_WRONG_PASSWORD};
-        case "user_not_exist":
+        case typeAction.LOGIN_USER_NOT_EXIST:
             return {type:typeAction.LOGIN_USER_NOT_EXIST};
-        case "user_existed":
+        case typeAction.LOGIN_USER_EXISTED:
             return {type:typeAction.LOGIN_USER_EXISTED};
-        case "inactive_user":
+        case typeAction.INACTIVE_USER:
             return {type:typeAction.INACTIVE_USER};
         default:
             return {type:""};

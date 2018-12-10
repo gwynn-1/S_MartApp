@@ -17,17 +17,6 @@ export function LoginAction(data,success,errorAction){
                             if(typeof success =="function"){
                                 success();
                             }
-                        }else if(res.data.status=="error"){
-                            console.log(res.data.message);
-                            if(res.data.message == "User không tồn tại"){
-                                dispatch(ErrorAction("user_not_exist"));
-                            }else if(res.data.message == "Sai mật khẩu"){
-                                dispatch(ErrorAction("wrong_password"));
-                            }
-
-                            if(typeof errorAction == "function"){
-                                errorAction();
-                            }
                         }
                     }).catch(function (error) {
                         // handle error
@@ -35,10 +24,21 @@ export function LoginAction(data,success,errorAction){
                         dispatch(LoadingScreenAction());
                         if (!error.response) {
                             // network error
-                            dispatch(ErrorAction("error_connection"));
+                            dispatch(ErrorAction(typeAction.ERROR_CONNECTION));
                         }else{
-                            if(error.response.status == 401 && error.response.data.message == "User chưa được active"){
-                                dispatch(ErrorAction("inactive_user"));
+                            if(error.response.status == 401){
+                                switch(error.response.data.message){
+                                    case typeAction.INACTIVE_USER : 
+                                        dispatch(ErrorAction(typeAction.INACTIVE_USER));
+                                        break;
+                                    case typeAction.LOGIN_USER_NOT_EXIST:
+                                        dispatch(ErrorAction(typeAction.LOGIN_USER_NOT_EXIST));
+                                        break;
+                                    case typeAction.LOGIN_WRONG_PASSWORD:
+                                        dispatch(ErrorAction(typeAction.LOGIN_WRONG_PASSWORD));
+                                        break;
+                                    default:break;
+                                }
                             }
                         }
 
@@ -60,19 +60,14 @@ export function checkLoginAction(data,success,errorAction){
                 if(typeof success =="function"){
                     success();
                 }
-            }else if(res.data.status=="error"){
-                if(res.data.message == "User chưa đăng nhập"){
-                    if(typeof errorAction == "function"){
-                        errorAction();
-                    }
-                }
             }
         }).catch(function(error){
             console.log(error);
-            if (!error.status) {
+            if (!error.response) {
                 // network error
-                dispatch(ErrorAction("error_connection"));
+                dispatch(ErrorAction(typeAction.ERROR_CONNECTION));
             }
+
             if(typeof errorAction == "function"){
                 errorAction();
             }
@@ -98,18 +93,13 @@ export function LogoutAction(jwt,success,errorAction){
                             if(typeof success =="function"){
                                 success();
                             }
-                        }else if(res.data.status=="error"){
-
-                            if(typeof errorAction == "function"){
-                                errorAction();
-                            }
                         }
                     }).catch(function(error){
                         console.log(error)
                         dispatch(LoadingScreenAction());
                         if (!error.status) {
                             // network error
-                            dispatch(ErrorAction("error_connection"));
+                            dispatch(ErrorAction(typeAction.ERROR_CONNECTION));
                         }
                         if(typeof errorAction == "function"){
                             errorAction();
