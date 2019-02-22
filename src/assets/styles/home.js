@@ -36,7 +36,7 @@ export default homeSts = StyleSheet.create({
         width:"100%",
         bottom:0,
         left:0,
-        backgroundColor:"#b3b3b3",
+        backgroundColor:constSts.COLOR_GRAY,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         justifyContent:"center"

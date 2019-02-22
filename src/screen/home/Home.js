@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, Image, TouchableOpacity, Animated, Easing, Platform } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, Animated, Easing, Platform, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
+import BackgroundTimer from 'react-native-background-timer';
+import { FloatingAction } from 'react-native-floating-action';
+
 import MainTheme from '@screen/partial/MainTheme';
 import Header from '@screen/partial/Header';
 import { ButtonReload, CheckConnection } from '@screen/partial/Component';
 import homeSts from '@assets/styles/home.js';
+import images from '@assets/images';
+import * as constSts from '@constants/style';
 
 import SModal from '@screen/partial/SModal';
 import LoadingScreen from '@screen/partial/LoadingScreen';
@@ -28,82 +33,177 @@ class Home extends Component {
             backgroundTextConnection: "red",
             reloadRotate: new Animated.Value(0),
             isLoading: false,
+            isDisconnect: false,
             modalMessage: "",
             modalTitle: "",
             modalError: false
         };
     }
 
+    componentDidMount() {
+        console.log("mount")
+        BackgroundTimer.runBackgroundTimer(() => {
+            //code that will be called every 3 seconds 
+            console.log("2222222")
+            this._getQrCode();
+        }, 1000 * 60 * 2);
+    }
+
+    componentWillUnmount(){
+        console.log("unmount")
+        BackgroundTimer.stopBackgroundTimer();
+    }
+
+    _getQrCode() {
+
+        var that = this;
+        this.props._getQr(function (status) {
+            if (status == 0) {
+                that.setState({ textConnection: "Không kết nối được Internet", backgroundTextConnection: "red", isDisconnect: true });
+                that._animCheckConnectionAppear();
+            } else if (status == 1 && that.state.isDisconnect == true) {
+                that.setState({ textConnection: "Đã kết nối Internet", backgroundTextConnection: "green", isDisconnect: true });
+                that._animCheckConnectionDisappear();
+            }
+        })
+    }
+
+    _animCheckConnectionDisappear() {
+        Animated.timing(                  // Animate over time
+            this.state.positionTextConnection,            // The animated value to drive
+            {
+                toValue: 0,
+                easing: Easing.linear,              // Animate to opacity: 1 (opaque)
+                duration: 3000,
+                delay: 300,
+                useNativeDriver: true          // Make it take a while
+            }
+        ).start();
+    }
+
+    _animCheckConnectionAppear() {
+        Animated.timing(                  // Animate over time
+            this.state.positionTextConnection,            // The animated value to drive
+            {
+                toValue: Platform.OS === 'ios' ? 90 : 70,
+                easing: Easing.linear,                   // Animate to opacity: 1 (opaque)
+                duration: 3000,
+                useNativeDriver: true              // Make it take a while
+            }
+        ).start();
+    }
+
     render() {
         const user = this.props.user;
+        const flActions = [
+            {
+                text: 'Món hàng sẽ mua',
+                icon: images.note,
+                name: 'Note',
+                color:constSts.COLOR_GRAY_THIN,
+                textBackground:constSts.COLOR_GRAY_THIN,
+                position: 1
+            },
+            {
+                text: 'Giỏ hàng',
+                icon: images.cart,
+                name: 'Cart',
+                color:constSts.COLOR_GRAY_THIN,
+                textBackground:constSts.COLOR_GRAY_THIN,
+                position: 2
+            },
+        ];
+
         return (
             <MainTheme style={homeSts.container}>
                 <Header navigation={this.props.navigation} />
                 <CheckConnection text={this.state.textConnection} style={{ transform: [{ translateY: this.state.positionTextConnection }], backgroundColor: this.state.backgroundTextConnection }} />
 
-                <ScrollView contentContainerStyle={homeSts.body} alwaysBounceVertical={false}>
+                <ScrollView contentContainerStyle={homeSts.body} alwaysBounceVertical={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isLoading}
+                            onRefresh={() => { this._onPressReload() }}
+                            title="Loading..."
+                        />
+                    }>
                     <View style={homeSts.bodyText}>
-                        <Text style={homeSts.text}>Xin Chào, { (user.name != undefined) ? user.name: ""}</Text>
+                        <Text style={homeSts.text}>Xin Chào, {(user.name != undefined) ? user.name : ""}</Text>
                     </View>
                     <View style={homeSts.imgBody}>
-                        {(this.props.qrcode != undefined && this.props.qrcode !="") ? (
+                        {(this.props.qrcode != undefined && this.props.qrcode != "") ? (
                             <Image style={homeSts.img} source={{ uri: this.props.qrcode }} />
-                        ) :null}
-                        
+                        ) : null}
+
                     </View>
                 </ScrollView>
-                <ButtonReload isLoading={this.state.isLoading} onPress={() => { this._onPressReload() }}></ButtonReload>
+                <FloatingAction
+                    color={constSts.COLOR_MAIN}
+                    actions={flActions}
+                    showBackground={false}
+                    onPressItem={
+                        (name) => {
+                            
+                        }
+                    }
+                />
                 <View style={homeSts.footer}>
                     <TouchableOpacity style={homeSts.btnFooter} >
                         <Text style={homeSts.footerText}>Xem vị trí cửa hàng</Text>
                     </TouchableOpacity>
                 </View>
                 {(this.props.loadingScreen) ? (
-                            <LoadingScreen style={{ height: "100%" }} animating={this.props.loadingScreen} />
-                        ) : null}
+                    <LoadingScreen style={{ height: "100%" }} animating={this.props.loadingScreen} />
+                ) : null}
                 <SModal message="Bạn có muốn đăng xuất ?" title="Thoát" PrimaryText="Có" SecondaryText="Không" isOpen={this.props.modalOpen} haveSecondary={true}
                     onPrimaryPress={() => this.LogoutConfirm()} onSecondaryPress={() => this.props._actModal()}></SModal>
                 <SModal message={this.props.error.message} title="LỖI" PrimaryText="OK" isOpen={this.props.error.error} haveSecondary={false}
-                        onPrimaryPress={() => this.closeErrorModal() }></SModal>
+                    onPrimaryPress={() => this.closeErrorModal()}></SModal>
             </MainTheme>
         );
     }
 
-    _onPressReload(){
+    _onPressReload() {
         // this._getQrCode();
         var that = this;
-        this.setState({isLoading:true});
-        this.props._getQr(function(){
-            that.setState({isLoading:false});
+        this.setState({ isLoading: true });
+        this.props._getQr(function (status) {
+            that.setState({ isLoading: false });
+            if (status == 0) {
+                that.setState({ textConnection: "Không kết nối được Internet", backgroundTextConnection: "red", isDisconnect: true });
+                that._animCheckConnectionAppear();
+            } else if (status == 1 && that.state.isDisconnect == true) {
+                that.setState({ textConnection: "Đã kết nối Internet", backgroundTextConnection: "green", isDisconnect: true });
+                that._animCheckConnectionDisappear();
+            }
         });
     }
 
-    LogoutConfirm(){
+    LogoutConfirm() {
         var that = this;
         this.props._actModal();
-        this.props._logout(function(status){
-            if(status == 1){
+        this.props._logout(function (status) {
+            if (status == 1) {
                 that.props.navigation.dispatch(StackActions.reset(
                     {
                         index: 0,
                         actions: [
-                        NavigationActions.navigate({ routeName: 'Gateway'})
+                            NavigationActions.navigate({ routeName: 'Gateway' })
                         ]
                     }));
             }
         });
     }
 
-    closeErrorModal(){
-        
+    closeErrorModal() {
         this.props._errorAction();
     }
 }
 
 const mapStateToProps = (state) => ({
-    user:state.auth.user,
-    qrcode : state.qr.qr,
-    modalOpen:state.global.s_modal,
+    user: state.auth.user,
+    qrcode: state.qr.qr,
+    modalOpen: state.global.s_modal,
     loadingScreen: state.global.loadingScreen,
     error: state.error,
 });
@@ -113,10 +213,10 @@ function mapDispatchToProps(dispatch) {
         _getQr: function (callback) {
             return dispatch(actGetQr(callback));
         },
-        _logout: function(callback){
+        _logout: function (callback) {
             return dispatch(actLogout(callback));
         },
-        _actModal:function(){
+        _actModal: function () {
             return dispatch(actModal());
         },
         _errorAction: function (type = null) {

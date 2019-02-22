@@ -6,6 +6,7 @@ export const CHECK_LOGIN = "CHECK_LOGIN";
 export const USER_LOGIN = "USER_LOGIN";
 export const LOGIN="LOGIN";
 export const LOGOUT="LOGOUT";
+export const SIGNUP = "SIGNUP";
 
 // Action QR
 export const GET_QR = "GET_QR";

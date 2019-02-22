@@ -1,8 +1,8 @@
-import { all, call, put, takeLatest,select } from 'redux-saga/effects';
+import { all, call, put, takeLatest, select } from 'redux-saga/effects';
 import * as constAction from '@constants/action';
 import * as constApi from '@constants/api';
 import { apiGetQr } from '@api/qr';
-import {actLoadQr} from '@reducers/actions/qr';
+import { actLoadQr } from '@reducers/actions/qr';
 
 export function* qrRoot() {
     yield all([
@@ -10,18 +10,30 @@ export function* qrRoot() {
     ]);
 }
 
-export function* getQr(action){
+export function* getQr(action) {
     const callback = action.payload.callback;
     var user = (yield select((state) => state.auth)).user;
     // console.log(user);
     const jwt = user.jwt_string;
 
-    const resp = yield call(apiGetQr,jwt);
-    if(resp.qr_image !=undefined){
-        yield put(actLoadQr(resp.qr_image));
+    try {
+        const resp = yield call(apiGetQr, jwt);
+        if (resp.qr_image != undefined) {
+            yield put(actLoadQr(resp.qr_image));
+        }
+
+        if (callback != null) {
+            callback(1);
+        }
+    } catch (error) {
+        if (error.response != undefined) {
+
+        } else {
+            // console.log(error);
+            if (callback != null) {
+                callback(0);
+            }
+        }
     }
 
-    if(callback !=null){
-        callback();
-    }
 }

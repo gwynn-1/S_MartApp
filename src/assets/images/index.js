@@ -8,6 +8,8 @@ const images = {
     menu:require("./menu.png"),
     receipt:require("./receipt.png"),
     reload:require("./reload.png"),
-    user:require("./user.png")
+    user:require("./user.png"),
+    note:require("./note.png"),
+    cart:require("./shopping-cart.png")
 };
 export default images;

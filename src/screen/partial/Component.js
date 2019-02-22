@@ -35,6 +35,7 @@ export class TextBox extends Component{
             <View>
                 <TextInput style={[comStyle.textBox,this.props.style]}
                             placeholder={this.props.placeholder}
+                            keyboardType={(this.props.keyboardType != undefined) ? this.props.keyboardType :"default" }
                             secureTextEntry={this.props.secureTextEntry}
                             onChangeText={this.props.onChangeText} ref={this.props.ref}>
                 </TextInput>

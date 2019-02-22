@@ -14,7 +14,7 @@ import loginRule from '@validators/loginRule';
 import signupRule from '@validators/signupRule';
 import validateForm from '@validators';
 import { actError } from '@reducers/actions/error';
-import { actLogin } from '@reducers/actions/auth';
+import { actLogin,actSignup } from '@reducers/actions/auth';
 import { actGetQr } from '@reducers/actions/qr';
 
 
@@ -50,7 +50,7 @@ class Gateway extends Component {
     }
 
     render() {
-        console.log(this.props.error);
+        // console.log(this.props.error);
         return (
             <ScrollView contentContainerStyle={gatewaySts.scrView} alwaysBounceVertical={false}>
                 <View style={gatewaySts.mainTheme}>
@@ -65,7 +65,8 @@ class Gateway extends Component {
                             {this._formGateway()}
                             <SModal message={this.props.error.message} title="LỖI" PrimaryText="OK" isOpen={this.props.error.error} haveSecondary={false}
                                 onPrimaryPress={() => this.closeErrorModal()}></SModal>
-
+                            <SModal message={this.state.modalMessage} title={this.state.modalTitle} PrimaryText="OK" isOpen={this.state.modalError} haveSecondary={false}
+                                onPrimaryPress={()=>this.setState({modalError:false})}></SModal>
                         </Animated.View>
                     </View>
                     {(this.props.loadingScreen) ? (
@@ -114,9 +115,9 @@ class Gateway extends Component {
 
                         <TextBox placeholder="Tên đăng nhập" errorMessage={this.state.errorUsername} style={gatewaySts.textBox} onChangeText={(value) => { this._ChangeText("username", value) }}></TextBox>
 
-                        <TextBox placeholder="Email" errorMessage={this.state.errorEmail} style={gatewaySts.textBox} onChangeText={(value) => { this._ChangeText("Email", value) }}></TextBox>
+                        <TextBox placeholder="Email" keyboardType="email-address" errorMessage={this.state.errorEmail} style={gatewaySts.textBox} onChangeText={(value) => { this._ChangeText("Email", value) }}></TextBox>
 
-                        <TextBox placeholder="Số điện thoại" errorMessage={this.state.errorPhone} style={gatewaySts.textBox} onChangeText={(value) => { this._ChangeText("Phone", value) }}></TextBox>
+                        <TextBox placeholder="Số điện thoại" keyboardType="numeric" errorMessage={this.state.errorPhone} style={gatewaySts.textBox} onChangeText={(value) => { this._ChangeText("Phone", value) }}></TextBox>
 
                         <TextBox secureTextEntry={true} placeholder="Mật khẩu" errorMessage={this.state.errorPassword} style={gatewaySts.textBox} onChangeText={(value) => { this._ChangeText("password", value) }}></TextBox>
 
@@ -219,6 +220,16 @@ class Gateway extends Component {
         var validate = validateForm(data, signupRule);
         if (!validate) {
             this.clearError();
+
+            this.props._signup(data,function(status){
+                that._ShowFormLogin();
+
+                that.setState({
+                    modalMessage:"Hãy kiểm tra email và kích hoạt tài khoản trước khi đăng nhập nhé",
+                    modalTitle:'Đăng kí thành công',
+                    modalError:true
+                })
+            });
         } else {
             this.setState({
                 errorUsername: ('user_name' in validate) ? validate.user_name[0] : null,
@@ -273,6 +284,9 @@ function mapDispatchToProps(dispatch) {
         },
         _login: function (data, callback) {
             return dispatch(actLogin(data, callback));
+        },
+        _signup:function(data, callback){
+            return dispatch(actSignup(data, callback))
         },
         _getQr: function (callback = null) {
             return dispatch(actGetQr(callback));

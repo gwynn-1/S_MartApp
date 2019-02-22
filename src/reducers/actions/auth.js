@@ -19,6 +19,15 @@ export const actLogin = (data,callback)=>{
     }
 }
 
+export const actSignup = (data,callback)=>{
+    return {
+        type:constAction.SIGNUP,
+        payload:{
+            data,callback
+        }
+    }
+}
+
 export const actLogout = (callback)=>{
     return {
         type:constAction.LOGOUT,

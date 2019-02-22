@@ -12,7 +12,33 @@ export function* authRoot() {
         takeLatest(constAction.CHECK_LOGIN, checkLogin),
         takeLatest(constAction.LOGIN, login),
         takeLatest(constAction.LOGOUT, logout),
+        takeLatest(constAction.SIGNUP, signup),
+
     ]);
+}
+
+export function* signup(action){
+    const callback = action.payload.callback;
+    const data = action.payload.data;
+    yield put(actLoadingScreen());
+
+    try{
+        const resp = yield call(apiRegister, data);
+        if (resp.status == constApi.API_SUCCESS) {
+            callback(1);
+        }
+    }catch(error){
+        if (error.response != undefined) {
+            const data = error.response.data;
+            // console.log(data);
+            yield put(actError(data.message));
+        } else {
+            // console.log(error);
+            yield put(actError(constAction.ERROR_CONNECTION));
+        }
+    }finally {
+        yield put(actLoadingScreen());
+    }
 }
 
 export function* logout(action) {

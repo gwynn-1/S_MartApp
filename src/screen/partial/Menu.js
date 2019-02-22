@@ -26,7 +26,7 @@ class MenuBar extends Component{
                     </View>
                 </View>
                 <View style={Menu.listMenu}>
-                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Main")}} style={Menu.touchItem}>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Home")}} style={Menu.touchItem}>
                             <View style={Menu.menuItem} >
                                 <Image source={images.home} style={Menu.icon}/>
                                 <Text style={Menu.itemText}>Trang chủ</Text>

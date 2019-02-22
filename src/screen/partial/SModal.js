@@ -3,6 +3,7 @@ import { View,Text } from 'react-native';
 import Modal from 'react-native-modalbox';
 import { Button,SecondaryButton } from '@screen/partial/Component';
 import modalStyle from '@assets/styles/smodal';
+import * as constSts from '@constants/style';
 
 export default class SModal extends Component{
     constructor(props){
@@ -28,7 +29,7 @@ export default class SModal extends Component{
                     </Button>
                     {this.props.haveSecondary ? (
                     <SecondaryButton onPress={this.props.onSecondaryPress} style={modalStyle.secondary}>
-                        <Text style={{fontSize: 16}}>
+                        <Text style={{fontSize: 16,color:constSts.COLOR_MAIN}}>
                             {this.props.SecondaryText}
                         </Text>
                     </SecondaryButton>

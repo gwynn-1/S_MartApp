@@ -6,6 +6,7 @@ import configureStore from '@store';
 
 import MenuBar from '@screen/partial/Menu';
 import HomeScreen from '@screen/home/Home';
+import ReceiptScreen from '@screen/receipt/Receipt';
 import GatewayScreen from '@screen/gateway/Gateway';
 import WaitingScreen from '@screen/waiting/Waiting';
 
@@ -14,9 +15,9 @@ const MainScreen = createDrawerNavigator(
       Home :{
         screen : HomeScreen
       },
-      // Receipt:{
-      //   screen: ReceiptScene
-      // }
+      Receipt:{
+        screen: ReceiptScreen
+      }
   },
   {
     initialRouteName: 'Home',

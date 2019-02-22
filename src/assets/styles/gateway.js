@@ -77,7 +77,8 @@ export default gatewaySts = StyleSheet.create({
         marginTop: 10     
     },
     textSignup:{
-        fontSize: 16
+        fontSize: 16,
+        color:constSts.COLOR_MAIN
     },
     textForget:{
         color:"#74C9F1",
