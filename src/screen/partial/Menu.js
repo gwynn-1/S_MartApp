@@ -12,6 +12,25 @@ class MenuBar extends Component{
     constructor(props){
         super(props);
     }
+    
+    _goToReceipt(){
+        var that =this;
+        
+          this.props.navigation.closeDrawer();
+        setTimeout(function(){ 
+            that.props.navigation.navigate('Receipt');
+        }, 800); 
+    }
+
+    _goToAccount(){
+        var that =this;
+        
+        this.props.navigation.closeDrawer();
+        setTimeout(function(){ 
+            that.props.navigation.navigate('Account');
+        }, 800); 
+        
+    }
 
     render(){
         return (
@@ -32,13 +51,13 @@ class MenuBar extends Component{
                                 <Text style={Menu.itemText}>Trang chủ</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={Menu.touchItem} >
+                        <TouchableOpacity style={Menu.touchItem} onPress={()=>{this._goToAccount()}}>
                             <View style={Menu.menuItem}>
-                                <Image source={images.account} style={Menu.icon}/>
+                                <Image source={images.account} style={Menu.icon} />
                                 <Text style={Menu.itemText}>Tài khoản</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={Menu.touchItem} onPress={()=>{this.props.navigation.navigate("Receipt")}}>
+                        <TouchableOpacity style={Menu.touchItem} onPress={()=>{this._goToReceipt()}}>
                             <View style={Menu.menuItem}>
                                 <Image source={images.receipt} style={Menu.icon}/>
                                 <Text style={Menu.itemText}>Hóa đơn</Text>

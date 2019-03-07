@@ -1,5 +1,7 @@
 export const MODAL_OPEN = "MODAL_OPEN";
 export const LOADING_SCREEN = "LOADING_SCREEN";
+export const GET_PROVINCE = "GET_PROVINCE";
+export const SET_PROVINCE = "SET_PROVINCE";
 
 //Action Auth
 export const CHECK_LOGIN = "CHECK_LOGIN";

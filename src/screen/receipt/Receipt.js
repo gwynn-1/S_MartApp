@@ -13,7 +13,7 @@ export default class Receipt extends Component{
     render(){
         return (
             <MainTheme style={receiptSts.container}>
-                <Header navigation={this.props.navigation} />
+                <Header navigation={this.props.navigation} isBack/>
 
                 <ScrollView contentContainerStyle={receiptSts.body} alwaysBounceVertical={false}>
                     

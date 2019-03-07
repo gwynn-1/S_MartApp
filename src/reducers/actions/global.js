@@ -12,3 +12,17 @@ export const actLoadingScreen = ()=>{
     };
 }
 
+export const actGetProvince = ()=>{
+    return {
+        type:constAction.GET_PROVINCE
+    }
+}
+
+export const actSetProvince = (province)=>{
+    return {
+        type:constAction.SET_PROVINCE,
+        payload:{
+            province
+        }
+    }
+}

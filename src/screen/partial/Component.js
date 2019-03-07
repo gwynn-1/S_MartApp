@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, StyleSheet,View,Image,Text,Animated,Dimensions,TextInput  } from 'react-native';
 import { BallIndicator } from 'react-native-indicators';
 import images from '@assets/images';
+import * as constSts from '@constants/style';
 
 export class Button extends Component {
     render() {
@@ -34,6 +35,7 @@ export class TextBox extends Component{
         return (
             <View>
                 <TextInput style={[comStyle.textBox,this.props.style]}
+                            value ={this.props.value}
                             placeholder={this.props.placeholder}
                             keyboardType={(this.props.keyboardType != undefined) ? this.props.keyboardType :"default" }
                             secureTextEntry={this.props.secureTextEntry}
@@ -94,11 +96,11 @@ var comStyle = StyleSheet.create({
     textBox:{
         fontSize: 18,
         borderRadius: 30,
-        borderColor: "#6947af",
+        borderColor: constSts.COLOR_VIOLET_THIN,
         borderWidth: 1,
         paddingHorizontal : 20,
         paddingVertical:5,
-        backgroundColor:"#ffffff"
+        backgroundColor:constSts.COLOR_WHITE
     },
     btnReload:{
         position:"absolute",

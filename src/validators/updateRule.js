@@ -1,39 +1,4 @@
-const signupRule = {
-    user_name: {
-        presence: { 
-            message: 'Hãy nhập Tên đăng nhập',
-            allowEmpty: false,
-        },
-        length: {
-          minimum: 4,
-          maximum :16,
-          tooLong:"Tên đăng nhập không được quá %{count} từ",
-          tooShort:"Tên đăng nhập không được ít hơn %{count} từ"
-        }
-    },
-    
-    password: {
-      presence: {
-        message: 'Hãy nhập Mật khẩu',
-        allowEmpty: false
-      },
-      length: {
-        minimum: 4,
-        maximum :16,
-        tooLong:"Password không được quá %{count} từ",
-        tooShort:"Password không được ít hơn %{count} từ"
-      },
-    },
-    repassword:{
-        presence: {
-            message: 'Hãy nhập Xác nhận Mật khẩu',
-            allowEmpty: false
-          },
-        equality: {
-            attribute: "password",
-            message: "Mật khẩu không trùng khớp",
-        }
-    },
+const updateRule = {
     Name:{
         presence: {
             message: 'Hãy nhập Họ và Tên',
@@ -78,6 +43,4 @@ const signupRule = {
             tooShort:"Số điện thoại không được ít hơn %{count} từ"
         }
     }
-  }
-  
-  export default signupRule;
+}
