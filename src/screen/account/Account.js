@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, TextInput,Platform } from 'react-native';
 import { connect } from 'react-redux';
 import RadioGroup from 'react-native-radio-buttons-group';
 import ModalSelector from 'react-native-modal-selector';
@@ -15,10 +15,14 @@ import images from '@assets/images';
 import * as constSts from '@constants/style';
 import validateForm from '@validators';
 import updateRule from '@validators/updateRule';
+import {
+    API_BASE_URL
+} from '@constants/api';
 
-import { apiGetUser, apiUpdateUser } from '@api/account';
+import { apiGetUser, apiUpdateUser, apiUpdateUserAvatar } from '@api/account';
 import { apiGetDistrict, apiGetWard } from '@api/location';
 import { actGetProvince } from '@reducers/actions/global';
+import { actSetUser } from '@reducers/actions/auth';
 
 class Account extends Component {
     static navigationOptions = {
@@ -66,7 +70,7 @@ class Account extends Component {
 
     componentDidMount() {
         this._getUser();
-        if(this.props.province.length == 1){
+        if (this.props.province.length == 1) {
             this.props._getProvince();
         }
     }
@@ -89,7 +93,7 @@ class Account extends Component {
                     Name: res.data.Name,
                     Email: res.data.Email,
                     Phone: res.data.Phone,
-                    Avatar: res.data.Avatar,
+                    Avatar: API_BASE_URL + res.data.Avatar,
                     Address: res.data.Address,
                     CityId: res.data.CityId,
                     DistrictId: res.data.DistrictId,
@@ -114,25 +118,54 @@ class Account extends Component {
         if (value == 1) {
             gender[0].selected = true;
             gender[1].selected = false;
-        }else{
+        } else {
             gender[0].selected = false;
             gender[1].selected = true;
         }
-        this.setState({listGender:gender});
+        this.setState({ listGender: gender });
     }
 
-    _openGallery(){
+    _openGallery() {
+        var user = this.props.user;
         ImagePicker.openPicker({
             width: 400,
             height: 400,
             cropping: true,
             multiple: false,
-            mediaType:"photo"
-          }).then(image => {
-            this.setState({Avatar: image.path});
-          }).catch(e => {
+            mediaType: "photo"
+        }).then(image => {
+            console.log(image);
+            // this.setState({ Avatar: image.path });
+            apiUpdateUserAvatar(this._createFormData(image),user.jwt_string).then(res=>{
+                if(res.status == "success"){
+                    console.log(res.data.image_path);
+                    this.setState({
+                        Avatar:API_BASE_URL + res.data.image_path,
+                        modalMessage: "Lưu Avatar thành công",
+                        modalTitle: 'Thành công',
+                        modalError: true
+                    });
+
+                    user.avatar = res.data.image_path
+                    this.props._setAvatarUser(user);
+                }
+            });
+        }).catch(e => {
             console.log(e);
-          });;
+        });
+    }
+
+    _createFormData(photo) {
+        const data = new FormData();
+
+        data.append("avatar", {
+            name: photo.path.substring(photo.path.lastIndexOf('/')+1),
+            type: photo.mime,
+            uri:
+                Platform.OS === "android" ? photo.path : photo.path.replace("file://", "")
+        });
+
+        return data;
     }
 
     render() {
@@ -353,6 +386,9 @@ function mapDispatchToProps(dispatch) {
         _getProvince: function () {
             return dispatch(actGetProvince());
         },
+        _setAvatarUser : function(user){
+            return dispatch(actSetUser(user));
+        }
     };
 }
 

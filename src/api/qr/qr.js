@@ -8,7 +8,7 @@ class ApiQr {
         var config = {
             headers: {'Authorization': "Bearer " + jwt}
         };
-        return client.get(API_BASE_URL + "/qrcode/get",config);
+        return client.get(API_BASE_URL + "/api/qrcode/get",config);
     }
 
 }

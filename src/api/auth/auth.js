@@ -5,22 +5,22 @@ import {
 
 class ApiAuth {
     static Login(body) {
-        return client.post(API_BASE_URL + "/gateway/login",body);
+        return client.post(API_BASE_URL + "/api/gateway/login",body);
     }
 
     static Register(body) {
-        return client.post(API_BASE_URL +"/gateway/signup",body);
+        return client.post(API_BASE_URL +"/api/gateway/signup",body);
     }
 
     static Logout(jwt){
         var config = {
             headers: {'Authorization': "Bearer " + jwt}
         };
-        return client.post(API_BASE_URL + "/gateway/logout",{},config);
+        return client.post(API_BASE_URL + "/api/gateway/logout",{},config);
     }
 
     static CheckLogin(body){
-        return client.post(API_BASE_URL + "/gateway/check-login",body);
+        return client.post(API_BASE_URL + "/api/gateway/check-login",body);
     }
 }
 

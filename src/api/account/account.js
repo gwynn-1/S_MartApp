@@ -8,14 +8,21 @@ class ApiAccount {
         var config = {
             headers: {'Authorization': "Bearer " + jwt}
         };
-        return client.get(API_BASE_URL + "/user/get",config);
+        return client.get(API_BASE_URL + "/api/user/get",config);
     }
 
     static UpdateUser(body,jwt){
         var config = {
             headers: {'Authorization': "Bearer " + jwt}
         };
-        return client.post(API_BASE_URL + "/user/update",body,config);
+        return client.post(API_BASE_URL + "/api/user/update",body,config);
+    }
+
+    static UpdateUserAvater(body,jwt){
+        var config = {
+            headers: {'Authorization': "Bearer " + jwt}
+        };
+        return client.post(API_BASE_URL + "/api/user/update-avatar",body,config);
     }
 }
 

@@ -35,20 +35,20 @@ export default accountSts = StyleSheet.create({
         backgroundColor:constSts.COLOR_WHITE,
         justifyContent:"center",
         alignItems:"center",
-        paddingVertical: 20,
+        paddingVertical: 10,
         marginTop:10,
         borderBottomColor: constSts.COLOR_GRAY_THIN,
         borderBottomWidth: 1,
     },
     imgAvatar:{
-        width:90,
-        height:90,
-        borderRadius:45
+        width:120,
+        height:120,
+        borderRadius:60
     },
     btnAvatar:{
-        width:110,
-        height:110,
-        borderRadius:55,
+        width:140,
+        height:140,
+        borderRadius:70,
         justifyContent:"center",
         alignItems:"center",
         borderWidth:1,
