@@ -15,8 +15,17 @@ export default class Receipt extends Component{
             <MainTheme style={receiptSts.container}>
                 <Header navigation={this.props.navigation} isBack/>
 
-                <ScrollView contentContainerStyle={receiptSts.body} alwaysBounceVertical={false}>
-                    
+                <ScrollView style={receiptSts.container} contentContainerStyle={{
+                    justifyContent: "space-between", flexGrow: 1
+                }} alwaysBounceVertical={false}>
+                    <View style={receiptSts.vHeader}>
+                        <View style={receiptSts.vHeaderField}>
+                            <Text style={receiptSts.txtHeader}>DANH SÁCH HÓA ĐƠN</Text>
+                        </View>
+                    </View>
+                    <View style={receiptSts.vContent}>
+                        
+                    </View>
                 </ScrollView>
             </MainTheme>
         );

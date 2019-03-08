@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, Image, TouchableOpacity, TextInput,Platform } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import RadioGroup from 'react-native-radio-buttons-group';
 import ModalSelector from 'react-native-modal-selector';
 import ImagePicker from 'react-native-image-crop-picker';
+import Lightbox from 'react-native-lightbox';
 
 import MainTheme from '@screen/partial/MainTheme';
 import SModal from '@screen/partial/SModal';
@@ -125,7 +126,9 @@ class Account extends Component {
         this.setState({ listGender: gender });
     }
 
-    _openGallery() {
+    _openGallery( close) {
+        
+
         var user = this.props.user;
         ImagePicker.openPicker({
             width: 400,
@@ -135,12 +138,15 @@ class Account extends Component {
             mediaType: "photo"
         }).then(image => {
             console.log(image);
+            close();
             // this.setState({ Avatar: image.path });
-            apiUpdateUserAvatar(this._createFormData(image),user.jwt_string).then(res=>{
-                if(res.status == "success"){
+            apiUpdateUserAvatar(this._createFormData(image), user.jwt_string).then(res => {
+                if (res.status == "success") {
                     console.log(res.data.image_path);
+                    // this.props.navigation.goBack();
+
                     this.setState({
-                        Avatar:API_BASE_URL + res.data.image_path,
+                        Avatar: API_BASE_URL + res.data.image_path,
                         modalMessage: "Lưu Avatar thành công",
                         modalTitle: 'Thành công',
                         modalError: true
@@ -148,6 +154,7 @@ class Account extends Component {
 
                     user.avatar = res.data.image_path
                     this.props._setAvatarUser(user);
+                    
                 }
             });
         }).catch(e => {
@@ -159,7 +166,7 @@ class Account extends Component {
         const data = new FormData();
 
         data.append("avatar", {
-            name: photo.path.substring(photo.path.lastIndexOf('/')+1),
+            name: photo.path.substring(photo.path.lastIndexOf('/') + 1),
             type: photo.mime,
             uri:
                 Platform.OS === "android" ? photo.path : photo.path.replace("file://", "")
@@ -186,9 +193,27 @@ class Account extends Component {
                     </View>
                     <View style={accountSts.vContent}>
                         <View style={accountSts.vAvatar}>
-                            <TouchableOpacity style={accountSts.btnAvatar} onPress={() => { this._openGallery() }}>
-                                <Image source={(this.state.Avatar != null) ? { uri: this.state.Avatar } : images.user} style={accountSts.imgAvatar} />
-                            </TouchableOpacity>
+                            <View style={accountSts.btnAvatar}>
+                                <Lightbox backgroundColor="white"
+                                        underlayColor="white"
+                                    renderHeader={close => (
+                                        <View style={accountSts.vHeaderImg}>
+                                            <TouchableOpacity style={accountSts.btnCloseImg} onPress={()=>{this._openGallery(close)}}>
+                                                <Text style={accountSts.closeImg}>Thay ảnh đại diện</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={accountSts.btnCloseImg} onPress={close}>
+                                                <Text style={accountSts.closeImg}>Đóng</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )}
+                                    renderContent={() => {
+                                        return (
+                                            <Image source={(this.state.Avatar != null) ? { uri: this.state.Avatar } : images.user} resizeMode="contain" style={accountSts.imgAvatarContain} />
+                                        )
+                                    }}>
+                                    <Image source={(this.state.Avatar != null) ? { uri: this.state.Avatar } : images.user} style={accountSts.imgAvatar} />
+                                </Lightbox>
+                            </View>
                         </View>
                         <View style={accountSts.vUserInfo}>
                             <View style={accountSts.vLabel}>
@@ -386,7 +411,7 @@ function mapDispatchToProps(dispatch) {
         _getProvince: function () {
             return dispatch(actGetProvince());
         },
-        _setAvatarUser : function(user){
+        _setAvatarUser: function (user) {
             return dispatch(actSetUser(user));
         }
     };

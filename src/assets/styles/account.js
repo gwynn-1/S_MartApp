@@ -45,6 +45,26 @@ export default accountSts = StyleSheet.create({
         height:120,
         borderRadius:60
     },
+    imgAvatarContain:{
+        flex: 1,
+        height: 150,
+    },
+    closeImg:{
+        fontSize:16,
+        color:constSts.COLOR_VIOLET_THIN
+    },
+    btnCloseImg:{
+        paddingHorizontal:10,
+        paddingVertical:15
+    },
+    vHeaderImg:{
+        width:"100%",
+        flex:1,
+        flexDirection:"row",
+        justifyContent:"space-between",
+        borderBottomWidth:1,
+        borderBottomColor:constSts.COLOR_GRAY
+    },
     btnAvatar:{
         width:140,
         height:140,

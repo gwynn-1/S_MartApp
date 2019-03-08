@@ -16,6 +16,7 @@
     "react-native-image-crop-picker": "^0.23.0",
     "react-native-indicators": "^0.13.0",
     "react-native-keyboard-aware-scroll-view": "^0.7.4",
+    "react-native-lightbox": "^0.8.0",
     "react-native-modal-selector": "^1.0.2",
     "react-native-modalbox": "^1.6.0",
     "react-native-radio-buttons-group": "^1.0.7",
