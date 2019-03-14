@@ -18,6 +18,8 @@ import { actGetQr } from '@reducers/actions/qr';
 import { actLogout } from '@reducers/actions/auth';
 import { actModal } from '@reducers/actions/global';
 
+// import { fcmUpdateQR } from '@firebase/notification';
+
 class Home extends Component {
     static navigationOptions = {
         header: null,
@@ -46,7 +48,8 @@ class Home extends Component {
             //code that will be called every 3 seconds 
             console.log("2222222")
             this._getQrCode();
-        }, 1000 * 60 * 2);
+        }, 1000 * 60);
+        // fcmUpdateQR();
     }
 
     componentWillUnmount(){

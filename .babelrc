@@ -10,6 +10,7 @@
 				"alias": {
 					"@screen": "./src/screen",
 					"@sagas": "./src/sagas",
+					"@firebase":"./src/firebase",
 					"@reducers": "./src/reducers",
 					"@store": "./src/store",
 					"@assets": "./src/assets",

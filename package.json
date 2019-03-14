@@ -8,10 +8,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
+    "accordion-collapse-react-native": "^0.1.9",
     "axios": "^0.18.0",
+    "moment": "^2.24.0",
     "react": "16.5.0",
     "react-native": "^0.57.8",
     "react-native-background-timer": "^2.1.1",
+    "react-native-firebase": "^5.2.3",
     "react-native-floating-action": "^1.14.2",
     "react-native-image-crop-picker": "^0.23.0",
     "react-native-indicators": "^0.13.0",
