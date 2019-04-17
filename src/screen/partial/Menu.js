@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { View,ScrollView,Text,Image,TouchableOpacity,Alert } from 'react-native';
 import {connect} from 'react-redux';
 import images from '@assets/images';
+import Icon5 from 'react-native-vector-icons/FontAwesome5';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import FeaIcon from 'react-native-vector-icons/Feather';
 
+import * as constSts from '@constants/style';
 import {
     API_BASE_URL
 } from '@constants/api';
@@ -51,19 +55,22 @@ class MenuBar extends Component{
                 <View style={Menu.listMenu}>
                         <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Home")}} style={Menu.touchItem}>
                             <View style={Menu.menuItem} >
-                                <Image source={images.home} style={Menu.icon}/>
+                                {/* <Image source={images.home} style={Menu.icon}/> */}
+                                <Icon5 name={"home"} size={20} style={Menu.icon} color={constSts.COLOR_BLACK}/>
                                 <Text style={Menu.itemText}>Trang chủ</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={Menu.touchItem} onPress={()=>{this._goToAccount()}}>
                             <View style={Menu.menuItem}>
-                                <Image source={images.account} style={Menu.icon} />
+                                {/* <Image source={images.account} style={Menu.icon} /> */}
+                                <MatIcon name={"account-box"} size={20} style={Menu.icon} color={constSts.COLOR_BLACK}/>
                                 <Text style={Menu.itemText}>Tài khoản</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={Menu.touchItem} onPress={()=>{this._goToReceipt()}}>
                             <View style={Menu.menuItem}>
-                                <Image source={images.receipt} style={Menu.icon}/>
+                                {/* <Image source={images.receipt} style={Menu.icon}/> */}
+                                <Icon5 name={"money-bill"} size={20} style={Menu.icon} color={constSts.COLOR_BLACK}/>
                                 <Text style={Menu.itemText}>Hóa đơn</Text>
                             </View>
                         </TouchableOpacity>
@@ -85,8 +92,9 @@ class MenuBar extends Component{
                         </TouchableOpacity>
                         <TouchableOpacity style={Menu.touchItem} onPress={()=>{this._PressLogout()}}>
                             <View style={Menu.footerItem}>
-                                <Image source={images.logout} style={Menu.iconFooter}/>
-                                <Text style={[Menu.footerText,{color:"red"}]}>Đăng xuất</Text>
+                                {/* <Image source={images.logout} style={Menu.iconFooter}/> */}
+                                <FeaIcon name={"log-out"} size={15} style={Menu.iconFooter} color={constSts.COLOR_RED}/>
+                                <Text style={[Menu.footerText,{color:constSts.COLOR_RED}]}>Đăng xuất</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

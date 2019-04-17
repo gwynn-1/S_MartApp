@@ -62,8 +62,8 @@ export default Menu = StyleSheet.create({
         alignItems: 'center',
     },
     icon:{
-        width:18,
-        height:18,
+        // width:18,
+        // height:18,
         marginLeft: 10,
     },
     itemText:{
@@ -89,8 +89,6 @@ export default Menu = StyleSheet.create({
         fontSize: 16,
     },
     iconFooter:{
-        width:15,
-        height:15,
         marginRight: 10,
     }
 })

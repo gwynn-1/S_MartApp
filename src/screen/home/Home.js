@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, Image, TouchableOpacity, Animated, Easing, Platform, RefreshControl } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, NetInfo, Animated, Easing, Platform, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
 import BackgroundTimer from 'react-native-background-timer';
 import { FloatingAction } from 'react-native-floating-action';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import FeaIcon from 'react-native-vector-icons/Feather';
 
 import MainTheme from '@screen/partial/MainTheme';
 import Header from '@screen/partial/Header';
-import { ButtonReload, CheckConnection } from '@screen/partial/Component';
+import { CheckConnection } from '@screen/partial/Component';
 import homeSts from '@assets/styles/home.js';
 import images from '@assets/images';
 import * as constSts from '@constants/style';
@@ -45,14 +47,14 @@ class Home extends Component {
     componentDidMount() {
         console.log("mount")
         BackgroundTimer.runBackgroundTimer(() => {
-            //code that will be called every 3 seconds 
-            console.log("2222222")
+            //code that will be called every 20 seconds 
+            // console.log("2222222")
             this._getQrCode();
-        }, 1000 * 60);
+        }, 1000 * 20);
         // fcmUpdateQR();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         console.log("unmount")
         BackgroundTimer.stopBackgroundTimer();
     }
@@ -60,15 +62,19 @@ class Home extends Component {
     _getQrCode() {
 
         var that = this;
-        this.props._getQr(function (status) {
-            if (status == 0) {
+        NetInfo.isConnected.fetch().then(isConnected => {
+            console.log('First, is ' + (isConnected ? 'online' : 'offline'));
+            if (isConnected) {
+                if (that.state.isDisconnect) {
+                    that.setState({ textConnection: "Đã kết nối Internet", backgroundTextConnection: "green", isDisconnect: false });
+                    that._animCheckConnectionDisappear();
+                }
+                that.props._getQr(null);
+            }else{
                 that.setState({ textConnection: "Không kết nối được Internet", backgroundTextConnection: "red", isDisconnect: true });
                 that._animCheckConnectionAppear();
-            } else if (status == 1 && that.state.isDisconnect == true) {
-                that.setState({ textConnection: "Đã kết nối Internet", backgroundTextConnection: "green", isDisconnect: true });
-                that._animCheckConnectionDisappear();
             }
-        })
+        });
     }
 
     _animCheckConnectionDisappear() {
@@ -100,19 +106,19 @@ class Home extends Component {
         const user = this.props.user;
         const flActions = [
             {
-                text: 'Món hàng sẽ mua',
-                icon: images.note,
+                text: 'SMart Reminder',
+                icon: (<Icon name={"sticky-note-o"} size={20} color={constSts.COLOR_BLACK}/>),
                 name: 'Note',
-                color:constSts.COLOR_GRAY_THIN,
-                textBackground:constSts.COLOR_GRAY_THIN,
+                color: constSts.COLOR_GRAY_THIN,
+                textBackground: constSts.COLOR_GRAY_THIN,
                 position: 1
             },
             {
-                text: 'Giỏ hàng',
-                icon: images.cart,
+                text: 'SMart Cart',
+                icon: (<FeaIcon name={"shopping-cart"} size={20} color={constSts.COLOR_BLACK}/>),
                 name: 'Cart',
-                color:constSts.COLOR_GRAY_THIN,
-                textBackground:constSts.COLOR_GRAY_THIN,
+                color: constSts.COLOR_GRAY_THIN,
+                textBackground: constSts.COLOR_GRAY_THIN,
                 position: 2
             },
         ];
@@ -146,7 +152,7 @@ class Home extends Component {
                     showBackground={false}
                     onPressItem={
                         (name) => {
-                            
+                            this.props.navigation.navigate(name);
                         }
                     }
                 />
@@ -170,14 +176,29 @@ class Home extends Component {
         // this._getQrCode();
         var that = this;
         this.setState({ isLoading: true });
-        this.props._getQr(function (status) {
-            that.setState({ isLoading: false });
-            if (status == 0) {
-                that.setState({ textConnection: "Không kết nối được Internet", backgroundTextConnection: "red", isDisconnect: true });
+        // this.props._getQr(function (status) {
+            
+        //     if (status == 0) {
+        //         that.setState({ textConnection: "Không kết nối được Internet", backgroundTextConnection: "red", isDisconnect: true });
+        //         that._animCheckConnectionAppear();
+        //     } else if (status == 1 && that.state.isDisconnect == true) {
+        //         that.setState({ textConnection: "Đã kết nối Internet", backgroundTextConnection: "green", isDisconnect: true });
+        //         that._animCheckConnectionDisappear();
+        //     }
+        // });
+        NetInfo.isConnected.fetch().then(isConnected => {
+            console.log('First, is ' + (isConnected ? 'online' : 'offline'));
+            if (isConnected) {
+                if (that.state.isDisconnect) {
+                    that.setState({ textConnection: "Đã kết nối Internet", backgroundTextConnection: "green", isDisconnect: false });
+                    that._animCheckConnectionDisappear();
+                }
+                that.props._getQr(function(){
+                    that.setState({ isLoading: false });
+                });
+            }else{
+                that.setState({ textConnection: "Không kết nối được Internet",isLoading: false, backgroundTextConnection: "red", isDisconnect: true });
                 that._animCheckConnectionAppear();
-            } else if (status == 1 && that.state.isDisconnect == true) {
-                that.setState({ textConnection: "Đã kết nối Internet", backgroundTextConnection: "green", isDisconnect: true });
-                that._animCheckConnectionDisappear();
             }
         });
     }

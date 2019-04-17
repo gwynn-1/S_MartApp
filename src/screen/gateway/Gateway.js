@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableWithoutFeedback, ScrollView, StatusBar, Alert, Animated, Easing, Platform, Image } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, ScrollView, StatusBar, Animated, Easing, Platform, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

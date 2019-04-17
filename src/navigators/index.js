@@ -6,6 +6,9 @@ import configureStore from '@store';
 
 import MenuBar from '@screen/partial/Menu';
 import HomeScreen from '@screen/home/Home';
+import NoteScreen from '@screen/note/Note';
+import AddNoteScreen from '@screen/note/AddNote';
+import ListProNoteScreen from '@screen/note/ListProNote';
 import ReceiptScreen from '@screen/receipt/Receipt';
 import AccountScreen from '@screen/account/Account';
 import GatewayScreen from '@screen/gateway/Gateway';
@@ -40,6 +43,15 @@ const Root = createStackNavigator({
   },
   Receipt: {
     screen: ReceiptScreen
+  },
+  Note: {
+    screen: NoteScreen
+  },
+  AddNote: {
+    screen: AddNoteScreen
+  },
+  ListProNote:{
+    screen: ListProNoteScreen
   }
 }, {
     initialRouteName: 'Waiting', header: null, headerMode: 'none',

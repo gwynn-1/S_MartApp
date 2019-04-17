@@ -9,8 +9,10 @@ buildscript {
         supportLibVersion = "27.1.1"
     }
     repositories {
-        jcenter()
         google()
+        jcenter()
+//         maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+// maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
@@ -29,8 +31,7 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
         // ADD THIS
-      maven { url 'https://maven.google.com' }
-
+      maven { url 'https://maven.google.com' }      
       // ADD THIS
       maven { url "https://jitpack.io" }
         google()
